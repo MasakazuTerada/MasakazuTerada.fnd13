@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>三目並べゲーム(世界一弱いコンピュータ)</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <h1>DIGプログラミング基礎プレゼンテーション</h1>
+  <h2>三目並べゲーム(世界一弱いコンピュータ)</h2>
+  <h3>Masakazu Terada</h3>
+  <div style="text-align:center">縦・横・斜めいずれか1列を青色にすると勝利です</div>
+  <div id="container">
+    <div id="board">
+      <div class="square" id="0"></div>
+      <div class="square" id="1"></div>
+      <div class="square" id="2"></div>
+      <div class="square" id="3"></div>
+      <div class="square" id="4"></div>
+      <div class="square" id="5"></div>
+      <div class="square" id="6"></div>
+      <div class="square" id="7"></div>
+      <div class="square" id="8"></div>
+    </div>
+  </div>
+  <div id="result">あなたの手番です</div>
+  <script type="text/javascript" src="./script.js"></script>
+  <hr>
+  <h4>まずはプレイ</h4>
+  <ol>
+    <li>先行はあなたです。どれか1マスをクリックすると青色になり、コンピュータの手番になります(コンピュータは赤色です)</li>
+    <li>あなたとコンピュータで交互に手番を進め、縦・横・斜めいずれか1列を同じ色にした方が勝利です</li>
+    <li>世界一弱いコンピュータなので簡単に勝てると思います</li>
+    <li>Ctrl+Rでリスタートできます</li>
+  </ol>
+  <hr>
+  <h4>開発手順</h4>
+  <ol>
+    <li>マスを9個並べて、それぞれに"0"～"8"のIDを振った</li>
+    <li>マスのクリックイベントを待つ、待ち受けを作った</li>
+    <li>クリックしたマスを青色に変える関数を作った</li>
+    <li>コンピュータの手番では空いているマスを調べ、ランダムで赤色に変えるようにした<br>
+        (ランダムなのでコンピュータが弱い)</li>
+    <li>勝利条件の配列、プレイヤーとコンピュータそれぞれのマスを保持する配列を作った</li>
+    <li>勝利条件が合致した方が勝ったことを表示するようにした</li>
+  </ol>
+  <hr>
+  <h4>苦労した点</h4>
+  <ol>
+    <li>テーマを考えるのが一番苦労した(下記条件でテーマを考えた)</li>
+    <ul>
+      <li>Day16までで習った範囲</li>
+      <li>本業の負担にならないボリューム</li>
+      <li>見たらすぐわかるテーマ</li>
+      <li>そこそこの難易度</li>
+    </ul>
+    <li>どの要素がクリックされたかを判別する方法がわからず停滞<br>
+        →thisが使えることがわかり、その後はさくさく進んだ</li>
+    <li>勝負が付いても、勝負が続行してしまう不具合が発生した<br>
+        →勝負が付いたら、待ち受けを解除するようにした(.removeEventListener())</li>
+    <li>コンピュータが弱すぎて、引き分けを検証するのが大変だった</li>
+  </ol>
+  <hr>
+  <h4>講座全体を通して</h4>
+  <ol>
+    <li>プログラミングの楽しさを再認識した</li>
+    <li>他言語を学んだことがあるので理解は早かったが、逆に異文化に戸惑うこともあった</li>
+    <li>システムの内製開発を考えるとまだまだ学ぶことが多い(データベースやサーバ側の処理など)</li>
+  </ol>
+  <hr>
+  <h4>HTML</h4>
+  <pre>
+    <code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"&gt;
+    &lt;meta name="theme-color" content="#000000"&gt;
+    &lt;title&gt;三目並べゲーム(世界一弱いコンピュータ)&lt;/title&gt;
+    &lt;link rel="stylesheet" href="./style.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;DIGプログラミング基礎プレゼンテーション&lt;/h1&gt;
+    &lt;h2&gt;三目並べゲーム(世界一弱いコンピュータ)&lt;/h2&gt;
+    &lt;h3&gt;Masakazu Terada&lt;/h3&gt;
+    &lt;div style="text-align:center"&gt;縦・横・斜めいずれか1列を青色にすると勝利です&lt;/div&gt;
+    &lt;div id="container"&gt;
+    &lt;div id="board"&gt;
+        &lt;div class="square" id="0"&gt;&lt;/div&gt;
+        &lt;div class="square" id="1"&gt;&lt;/div&gt;
+        &lt;div class="square" id="2"&gt;&lt;/div&gt;
+        &lt;div class="square" id="3"&gt;&lt;/div&gt;
+        &lt;div class="square" id="4"&gt;&lt;/div&gt;
+        &lt;div class="square" id="5"&gt;&lt;/div&gt;
+        &lt;div class="square" id="6"&gt;&lt;/div&gt;
+        &lt;div class="square" id="7"&gt;&lt;/div&gt;
+        &lt;div class="square" id="8"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id="result"&gt;あなたの手番です&lt;/div&gt;
+    &lt;script type="text/javascript" src="./script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </code>
+  </pre>
+  <hr>
+  <h4>CSS</h4>
+  <pre>
+    <code>
+h1 {
+    color: #364e96;/*文字色*/
+    padding: 0 0;/*上下の余白*/
+    text-align: center;
+    border-top: solid 3px #364e96;/*上線*/
+    border-bottom: solid 3px #364e96;/*下線*/
+    }
+h2 {
+    color: #364e96;/*文字色*/
+    border: solid 3px #364e96;/*線色*/
+    padding: 0;/*文字周りの余白*/
+    width: 600px;
+    text-align: center;
+    margin: auto;
+    border-radius: 0.5em;/*角丸*/
+    }
+h3 {
+    text-align: center;
+}
+div#container {
+    width: 100%;
+    height: 100%;
+}
+div#board {
+    width:300px;
+    height:300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+}
+div.square {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    background-color:white;
+    border: solid 1px gray;
+    border-radius: 15px;
+}
+div#result {
+    width:100%;
+    height:100%;
+    margin: 0 auto;
+    text-align: center;
+}
+    </code>
+  </pre>
+  <hr>
+  <h4>JavaScript</h4>
+  <pre>
+    <code>
+'use strict'
+// 1行目に記載している 'use strict' は削除しないでください
+const yourColor = "blue"; // あなたのマスの色
+const comColor = "red";   // COMのマスの色
+const victoryCondition= [ // 勝利条件
+    ["0", "1", "2"],
+    ["3", "4", "5"],
+    ["6", "7", "8"],
+    ["0", "3", "6"],
+    ["1", "4", "7"],
+    ["2", "5", "8"],
+    ["0", "4", "8"],
+    ["2", "4", "6"]
+];
+
+const yourSquare = []; // あなたのマス
+const comSquare = [];  // COMのマス
+
+const square = [];     // 各マス
+const result = document.getElementById("result"); // 結果表示枠
+let winner = false;
+
+function removeEvent() { // イベントの待ち受けを解除
+    for (let i = 0; i &lt; 9; i++) {
+        square[i].removeEventListener("click", clickSquare);
+    }
+}
+
+function judgmentYou() { // プレイヤー側の判定
+    for (let i = 0; i &lt; victoryCondition.length; i++) {
+        let numOfMatches = 0;
+        for (let j = 0; j &lt; yourSquare.length; j++) {
+            for (let k = 0; k &lt; 3; k++) {
+                if (victoryCondition[i][k] === yourSquare[j]) {
+                    numOfMatches++;
+                }
+            }
+            if (numOfMatches === 3){
+                // console.log("あなたの勝ちです");
+                winner = true;
+                result.innerHTML = `&lt;font color=${yourColor}&gt;あなたの勝ちです&lt;/font&gt;(Ctrl+Rでリスタート)`;
+                removeEvent();
+                return;
+            }
+        }
+    }
+}
+
+function judgmentCom() { // コンピュータ側の判定
+    for (let i = 0; i &lt; victoryCondition.length; i++) {
+        let numOfMatches = 0;
+        for (let j = 0; j &lt; comSquare.length; j++) {
+            for (let k = 0; k &lt; 3; k++) {
+                if (victoryCondition[i][k] === comSquare[j]) {
+                    numOfMatches++;
+                }
+            }
+            if (numOfMatches === 3){
+                // console.log("COMの勝ちです");
+                winner = true;
+                result.innerHTML = `&lt;font color=${comColor}&gt;コンピュータの勝ちです&lt;/font&gt;(Ctrl+Rでリスタート)`;
+                removeEvent();
+                return;
+            }
+        }
+    }
+}
+
+function clickSquare() {// あなたの手番
+    // console.log(this);
+    if (this.style.backgroundColor !== yourColor &&
+        this.style.backgroundColor !== comColor) {
+        this.style.backgroundColor = yourColor;
+        yourSquare.push(this.id);
+        // console.log(this.id + ":" + this.style.backgroundColor);
+        // console.log(yourSquare);
+        judgmentYou();
+        if (winner !== true) { // 勝者が決まっていない場合はCOMの番
+            comTurn();
+        }
+        const emptySquare = [];
+        for (let i = 0; i &lt; 9; i++) { // 空いているマスを調べる
+            if (square[i].style.backgroundColor !== yourColor &&
+                square[i].style.backgroundColor !== comColor) {
+                    emptySquare.push(square[i].id);
+                }
+        }
+        if (emptySquare.length === 0 && winner !== true) {
+            result.innerHTML = `&lt;font color="green"&gt;引き分けです&lt;/font&gt;(Ctrl+Rでリスタート)`;
+            for (let i = 0; i &lt; 9; i++) { // イベントの待ち受けを解除
+                square[i].removeEventListener("click", clickSquare);
+            }
+        }
+    }
+}
+
+function comTurn() { // COMの手番
+    const s = [];
+    const emptySquare = [];
+    for (let i = 0; i &lt; 9; i++) { // 空いているマスを調べる
+        if (square[i].style.backgroundColor !== yourColor && 
+            square[i].style.backgroundColor !== comColor) {
+                emptySquare.push(square[i].id);
+                // console.log(document.getElementsByClassName("square")[i].id);
+            }
+    }
+    // console.log("\n");
+    if (emptySquare.length !== 0) {
+        let random = Math.floor(Math.random() * emptySquare.length);
+        // console.log(emptySquare[random]);
+        document.getElementById(emptySquare[random]).style.backgroundColor = comColor;
+        comSquare.push(emptySquare[random]);
+        judgmentCom();
+    }
+}
+
+// クリックの待ち受けを作る
+for (let i = 0; i &lt; 9; i++) {
+    square.push(document.getElementsByClassName("square")[i]);
+    square[i].addEventListener("click", clickSquare);
+}
+    </code>
+  </pre>
+  </body>
+</html>
